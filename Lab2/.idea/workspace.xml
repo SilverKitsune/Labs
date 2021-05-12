@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="02f7a138-623e-46af-b7a1-b983aae89348" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Package fractal UML.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fractal.uml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Lab2/fractal/KochMegaSnowflakes$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Lab2/fractal/KochMegaSnowflakes.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fractal/KochMegaSnowflakes.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,12 +106,24 @@
       <updated>1620560251953</updated>
       <workItem from="1620560257740" duration="21270000" />
       <workItem from="1620840920084" duration="61000" />
-      <workItem from="1620841004679" duration="666000" />
+      <workItem from="1620841004679" duration="773000" />
     </task>
+    <task id="LOCAL-00001" summary="Удален ненужный файл и добавлена сгенерированная UML-диаграмма">
+      <created>1620841736641</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1620841736641</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Удален ненужный файл и добавлена сгенерированная UML-диаграмма" />
+    <option name="LAST_COMMIT_MESSAGE" value="Удален ненужный файл и добавлена сгенерированная UML-диаграмма" />
   </component>
   <component name="WindowStateProjectService">
     <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser" timestamp="1620584062875">
@@ -127,34 +134,34 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="690" y="270" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1620582056537" />
-    <state x="598" y="118" key="CommitChangelistDialog2" timestamp="1620590456019">
+    <state x="598" y="118" key="CommitChangelistDialog2" timestamp="1620841735125">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="598" y="118" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1620590456019" />
+    <state x="598" y="118" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1620841735125" />
     <state x="740" y="252" key="FileChooserDialogImpl" timestamp="1620841595945">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="252" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1620841595945" />
-    <state width="1877" height="278" key="GridCell.Tab.0.bottom" timestamp="1620597093771">
+    <state width="1877" height="278" key="GridCell.Tab.0.bottom" timestamp="1620841788877">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="278" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1620597093771" />
-    <state width="1877" height="278" key="GridCell.Tab.0.center" timestamp="1620597093771">
+    <state width="1877" height="278" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1620841788877" />
+    <state width="1877" height="278" key="GridCell.Tab.0.center" timestamp="1620841788877">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="278" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1620597093771" />
-    <state width="1877" height="278" key="GridCell.Tab.0.left" timestamp="1620597093771">
+    <state width="1877" height="278" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1620841788877" />
+    <state width="1877" height="278" key="GridCell.Tab.0.left" timestamp="1620841788877">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="278" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1620597093771" />
-    <state width="1877" height="278" key="GridCell.Tab.0.right" timestamp="1620597093771">
+    <state width="1877" height="278" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1620841788877" />
+    <state width="1877" height="278" key="GridCell.Tab.0.right" timestamp="1620841788877">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="278" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1620597093771" />
-    <state x="552" y="256" key="Vcs.Push.Dialog.v2" timestamp="1620591034624">
+    <state width="1877" height="278" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1620841788877" />
+    <state x="552" y="256" key="Vcs.Push.Dialog.v2" timestamp="1620841767157">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="256" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1620591034624" />
+    <state x="552" y="256" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1620841767157" />
     <state x="668" y="347" key="com.intellij.ide.util.TipDialog" timestamp="1620840942011">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
