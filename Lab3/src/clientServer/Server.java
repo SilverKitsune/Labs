@@ -2,61 +2,94 @@ package clientServer;
 
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-///TODO Обработка текста
+///TODO Доработать бработку текста
 
 public class Server {
 
     public static void main(String[] args) {
-
-        ServerSocket ss;
-        Socket s;
-        InputStream is;
-        OutputStream os;
+        System.out.println("Приложение-сервер");
         try {
-            System.out.println("Socket Server Application");
-        } catch (Exception ioe) {
-            System.out.println(ioe.toString());
-        }
-        try {
-            ss = new ServerSocket(7777);
-            s = ss.accept();
-            is = s.getInputStream();
-            os = s.getOutputStream();
+            ServerSocket serverSocket = new ServerSocket(7777);
+            Socket socket = serverSocket.accept();
+            InputStream inputStream = socket.getInputStream();
+            OutputStream outputStream = socket.getOutputStream();
             int length;
             while (true) {
-                byte[] buf = new byte[512];
-                length = is.read(buf);
+                /*Чтение текста от клиента*/
+                byte[] bufIn = new byte[512], bufOut;
+                length = inputStream.read(bufIn);
                 if (length == -1)
                     break;
-                String str = new String(buf, 0, buf.length);
-                //StringTokenizer st;
-                //st = new StringTokenizer(str, "\r\n");
-                //str = (String) st.nextElement();
-                System.out.println(">  " + str);
-                os.write(buf, 0, buf.length);
-                os.flush();
+                String text = new String(bufIn, 0, bufIn.length);
+                System.out.println(">  " + text);
+
+                /*Отправка измененного текста*/
+                String str = editText(text);
+                System.out.println("Text:");
+                System.out.println(str);
+                bufOut = str.getBytes(StandardCharsets.UTF_8);
+                outputStream.write(bufOut, 0, bufOut.length);
+                outputStream.flush();
             }
-            is.close();
-            os.close();
-            s.close();
-            ss.close();
+            inputStream.close();
+            outputStream.close();
+            socket.close();
+            serverSocket.close();
         } catch (Exception ioe) {
             System.out.println(ioe.toString());
         }
         try {
-            System.out.println("Press Enter to terminate application...");
+            System.out.println("Нажмите <Enter> чтобы закрыть приложение...");
             System.in.read();
         } catch (Exception ioe) {
             System.out.println(ioe.toString());
         }
     }
 
-    public static String editText() {
-        String editedText = null;
+    public static String editText(String text) {
+        StringBuilder editedText = new StringBuilder();
+        StringTokenizer lines = new StringTokenizer(text, "\r\n");    // Делим текст на строчки
 
-        return editedText;
+        while (lines.hasMoreElements()) {
+            String line = (String) lines.nextElement();
+            System.out.println("Line = " + line);
+            StringTokenizer words = new StringTokenizer(line, " ");  // делим строчку на слова
+            boolean isFirst = true;                                         // проверка на первое слово (это чтобы не было лишних пробелов)
+            while (words.hasMoreElements()) {
+                String word = words.nextToken();
+                System.out.println("Word = " + word);
+                if (isHex(word)) {                                          // если слово - шеснадцетиричное число
+                    word.replaceAll(" ", "");
+                    word = String.valueOf(
+                            Integer.parseInt(word.substring(2), 16)); // переводим его в десятичное число
+                    System.out.println("EditedWord = " + word);
+                }
+                                                                            //Если нет, то ничего с ним не делаем
+                if (!isFirst)
+                    editedText.append(" ");                                 // если слово не первое, то сначала добавляем пробел
+                else
+                    isFirst = false;                                        // если слово первое, то пробел сначала добавлять не нужно, просто отмечаем, что остальные слова уже не первые
+                editedText.append(word);                                    //записываем слово
+            }
+            editedText.append("\n");                                        // добавляем в текст перенос строки
+        }
+        return editedText.toString();
     }
 
+    private static boolean isHex(String word) {
+        String hexLetters = "abcdfABCDF", numbers = "0123456789 ";
+        if (!word.startsWith("0x")) {
+            System.out.println("NotHex-1");
+            return false; }
+        for (int i = 2; i < word.length(); i++) {
+            char ch = word.charAt(i);
+            if (!(hexLetters.indexOf(ch) != -1 || numbers.indexOf(ch) != -1)){
+                System.out.println("NotHex-2");
+                return false;}
+        }
+        return true;
+    }
 }

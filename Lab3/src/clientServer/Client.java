@@ -24,14 +24,14 @@ public class Client {
                 byte[] bKbdInput, buf = new byte[512];
                 String text, editedText;
 
-                /*Чтение текста*/
+                /*Чтение текста из файла или консоли*/
                 text = readText();
                 if (text != null) {
                     bKbdInput = text.getBytes(StandardCharsets.UTF_8);
                     length = bKbdInput.length;
+                    System.out.print(">  " + text + "\n");
 
                     /*Отправка на сервер*/
-                    System.out.print(">  " + text + "\n");
                     outputStream.write(bKbdInput, 0, length);
                     outputStream.flush();
 
