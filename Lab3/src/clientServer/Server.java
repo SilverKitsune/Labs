@@ -5,7 +5,6 @@ import java.net.*;
 import java.util.*;
 
 ///TODO Обработка текста
-///TODO Запись в файл
 
 public class Server {
 
@@ -52,6 +51,12 @@ public class Server {
         } catch (Exception ioe) {
             System.out.println(ioe.toString());
         }
+    }
+
+    public static String editText() {
+        String editedText = null;
+
+        return editedText;
     }
 
 }

@@ -5,36 +5,33 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-///TODO Чтение из файла
-
 public class Client {
 
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        Socket socket;
-        InputStream inputStream;
-        OutputStream outputStream;
-        System.out.println(
-                "Socket Client Application" +
-                        "\nEnter any string or" +
-                        " 'quit' to exit...");
-        try {
-            socket = new Socket("localhost", 7777);
-            inputStream = socket.getInputStream();
-            outputStream = socket.getOutputStream();
-            int length;
-            String str;
-            while (true) {
-                byte[] bKbdInput = new byte[256];
-                byte[] buf = new byte[512];
-                String text = readText(in);
+    private static Scanner in = new Scanner(System.in);
 
-                bKbdInput = text.getBytes(StandardCharsets.UTF_8);
-                length = bKbdInput.length;
-                if (length != 1) {
+    public static void main(String[] args) {
+
+        System.out.println(
+                "Приложение-клиент\n" +
+                        "Введите текст или 'quit' чтобы выйти...");
+
+        try {
+            Socket socket = new Socket("localhost", 7777);
+            InputStream inputStream = socket.getInputStream();
+            OutputStream outputStream = socket.getOutputStream();
+            int length;
+            while (true) {
+                byte[] bKbdInput, buf = new byte[512];
+                String text, editedText;
+
+                /*Чтение текста*/
+                text = readText();
+                if (text != null) {
+                    bKbdInput = text.getBytes(StandardCharsets.UTF_8);
+                    length = bKbdInput.length;
 
                     /*Отправка на сервер*/
-                    System.out.print(">  " + text);
+                    System.out.print(">  " + text + "\n");
                     outputStream.write(bKbdInput, 0, length);
                     outputStream.flush();
 
@@ -42,12 +39,14 @@ public class Client {
                     length = inputStream.read(buf);
                     if (length == -1)
                         break;
-                    str = new String(buf, 0, buf.length);
-                    /*st = new StringTokenizer(str, "\r\n");
-                    str = (String) st.nextElement();*/
-                    System.out.println(">> " + str);
+                    editedText = new String(buf, 0, buf.length);
+                    System.out.println(">> " + editedText);
+                    if(writeTextToFile(editedText))
+                        System.out.println("Поздравляю! Текст успешно записан в файл:)");
+                    else
+                        System.out.println("Не вышло:( Текст не записался в файл");
 
-                    if (str.equals("quit"))
+                    if (text.equals("quit"))
                         break;
                 }
             }
@@ -58,40 +57,102 @@ public class Client {
             System.out.println(ioe.toString());
         }
         try {
-            System.out.println(
-                    "Press <Enter> to " + "terminate application...");
-            in.nextLine();
-            in.nextLine();
+            System.out.println("Нажмите <Enter> чтобы закрыть приложение...");
+            System.in.read();
         } catch (Exception ioe) {
             System.out.println(ioe.toString());
         }
     }
 
-    public static String readText(Scanner in) {
+    public static String readText() {
+        int inputType;
+        String text = null;
+        System.out.println("Выберите тип ввода (1 - консольный, 2 - файл):");
+        if (in.hasNextInt())
+            inputType = in.nextInt();
+        else
+            inputType = -1;
 
+        /*Чтение текста*/
+        if (inputType == 1)
+            text = readTextFromConsole();
+        if (inputType == 2)
+            text = readTextFromFile();
+        if (inputType < 1 || inputType > 2) {
+            System.out.println("Ошибка! Некорректное значение! По умолчанию будет выбран консольный ввод.");
+            text = readTextFromConsole();
+        }
+        return text;
+    }
+
+    public static String readTextFromFile() {
+        String pathToFile = "InputFile.txt";
+        String enc = "cp1251";
+        LinkedList<String> text = new LinkedList<>();
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(pathToFile), enc));
+            String str;
+            while (!(str = bufferedReader.readLine()).equals(null)) {
+                text.add(str);
+            }
+            bufferedReader.close();
+        } catch (IOException e) {
+            System.out.println(e.toString());
+            return null;
+        } catch (NullPointerException ignored) {
+        }
+        return String.join(System.lineSeparator(), text);
+    }
+
+    public static String readTextFromConsole() {
         System.out.print("Введите количество строк: ");
         int n;
         if (in.hasNextInt()) {
             n = in.nextInt();
-        } else {
+        } else
             n = -1;
-            System.out.println("Ошибка ввода");
-        }
         LinkedList<String> text = new LinkedList<>();
         if (n > 0) {
             System.out.println("Введите текст:");
             in.nextLine();
-            for (int i = 0; i < n; i++)
-            {
+            for (int i = 0; i < n; i++) {
                 String str = in.nextLine();
-                //System.out.println("** "+str);
                 text.add(str);
             }
 
-        } else
+        } else {
+            System.out.println("Ошибка ввода! Приложение будет закрыто.");
             text.add("quit");
-        //System.out.println("All: " + String.join(System.lineSeparator(), text));
+        }
+
+        if (isEmptyText(text))
+            return null;
         return String.join(System.lineSeparator(), text);
     }
 
+    public static boolean writeTextToFile(String text) {
+        String pathToFile = "InputFile.txt";
+        String enc = "cp1251";
+        try {
+            BufferedWriter out;
+            out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pathToFile), enc));
+            out.write(text);
+            out.close();
+        } catch (IOException e) {
+            System.out.println(e.toString());
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean isEmptyText(LinkedList<String> text) {
+        boolean isEmpty = true;
+        for (String s : text) {
+            isEmpty = s.isEmpty();
+            if (!isEmpty)
+                break;
+        }
+        return isEmpty;
+    }
 }
+
