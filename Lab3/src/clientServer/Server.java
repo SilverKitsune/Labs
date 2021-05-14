@@ -26,7 +26,7 @@ public class Server {
 
                 /*Отправка измененного текста*/
                 String editedText;
-                if(!text.equals("quit"))
+                if (!text.equals("quit"))
                     editedText = editText(text);
                 else
                     editedText = text;
@@ -39,11 +39,14 @@ public class Server {
             outputStream.close();
             socket.close();
             serverSocket.close();
-
-            System.out.println("Нажмите <Enter> чтобы закрыть приложение...");
-            System.in.read();
         } catch (Exception ioe) {
             System.out.println(ioe.toString());
+        }
+        try {
+            System.out.println("Нажмите <Enter> чтобы закрыть приложение...");
+            System.in.read();
+        } catch (Exception e) {
+            e.toString();
         }
     }
 
@@ -53,17 +56,13 @@ public class Server {
 
         while (lines.hasMoreElements()) {
             String line = (String) lines.nextElement();
-            //System.out.println("Line = " + line);
             StringTokenizer words = new StringTokenizer(line, " ");  // делим строчку на слова
             boolean isFirst = true;                                         // проверка на первое слово (это чтобы не было лишних пробелов)
             while (words.hasMoreElements()) {
                 String word = words.nextToken();
-                //System.out.println("Word = " + word);
-                //System.out.println(word.length());
                 if (isHex(word)) {                                          // если слово - шеснадцетиричное число
                     word = String.valueOf(
                             Integer.parseInt(word.substring(2), 16)); // переводим его в десятичное число
-                    //System.out.println("EditedWord = " + word);
                 }                                                           //Если нет, то ничего с ним не делаем
                 if (!isFirst)
                     editedText.append(" ");                                 // если слово не первое, то сначала добавляем пробел

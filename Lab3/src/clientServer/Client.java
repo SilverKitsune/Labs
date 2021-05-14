@@ -55,12 +55,16 @@ public class Client {
             outputStream.close();
             socket.close();
 
-            System.out.println("Нажмите <Enter> чтобы закрыть приложение...");
-            System.in.read();
-
         } catch (Exception ioe) {
             System.out.println(ioe.toString());
         }
+        try {
+            System.out.println("Нажмите <Enter> чтобы закрыть приложение...");
+            System.in.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static String readText() {
@@ -84,7 +88,7 @@ public class Client {
         return text;
     }
 
-    public static String readTextFromFile() {
+    private static String readTextFromFile() {
         String pathToFile = "InputFile.txt";
         String enc = "utf-8";
         LinkedList<String> text = new LinkedList<>();
@@ -103,7 +107,7 @@ public class Client {
         return String.join(System.lineSeparator(), text);
     }
 
-    public static String readTextFromConsole() {
+    private static String readTextFromConsole() {
         System.out.print("Введите количество строк: ");
         int n;
         if (in.hasNextInt()) {
