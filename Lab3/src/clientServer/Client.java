@@ -29,7 +29,7 @@ public class Client {
                 if (text != null) {
                     bKbdInput = text.getBytes(StandardCharsets.UTF_8);
                     length = bKbdInput.length;
-                    System.out.print(">  " + text + "\n");
+                    System.out.println("\n>  " + text);
 
                     /*Отправка на сервер*/
                     outputStream.write(bKbdInput, 0, length);
@@ -39,26 +39,25 @@ public class Client {
                     length = inputStream.read(buf);
                     if (length == -1)
                         break;
-                    editedText = new String(buf, 0, buf.length);
+                    editedText = new String(buf);
                     System.out.println(">> " + editedText);
-                    if(writeTextToFile(editedText))
-                        System.out.println("Поздравляю! Текст успешно записан в файл:)");
-                    else
-                        System.out.println("Не вышло:( Текст не записался в файл");
 
                     if (text.equals("quit"))
                         break;
+
+                    if (writeTextToFile(editedText))
+                        System.out.println("Поздравляю! Текст успешно записан в файл:)");
+                    else
+                        System.out.println("Не вышло:( Текст не записался в файл");
                 }
             }
             inputStream.close();
             outputStream.close();
             socket.close();
-        } catch (Exception ioe) {
-            System.out.println(ioe.toString());
-        }
-        try {
+
             System.out.println("Нажмите <Enter> чтобы закрыть приложение...");
             System.in.read();
+
         } catch (Exception ioe) {
             System.out.println(ioe.toString());
         }
@@ -87,7 +86,7 @@ public class Client {
 
     public static String readTextFromFile() {
         String pathToFile = "InputFile.txt";
-        String enc = "cp1251";
+        String enc = "utf-8";
         LinkedList<String> text = new LinkedList<>();
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(pathToFile), enc));
@@ -131,8 +130,8 @@ public class Client {
     }
 
     public static boolean writeTextToFile(String text) {
-        String pathToFile = "InputFile.txt";
-        String enc = "cp1251";
+        String pathToFile = "OutputFile.txt";
+        String enc = "utf-8";
         try {
             BufferedWriter out;
             out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pathToFile), enc));
