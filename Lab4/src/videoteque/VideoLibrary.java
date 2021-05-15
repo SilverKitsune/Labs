@@ -1,7 +1,6 @@
 
 package videoteque;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -43,8 +42,9 @@ import javax.xml.bind.annotation.XmlType;
  *                   &lt;element name="genre" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
  *                   &lt;element name="year">
  *                     &lt;simpleType>
- *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}integer">
+ *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}int">
  *                         &lt;minInclusive value="1888"/>
+ *                         &lt;maxInclusive value="2021"/>
  *                       &lt;/restriction>
  *                     &lt;/simpleType>
  *                   &lt;/element>
@@ -117,6 +117,10 @@ public class VideoLibrary {
         return this.movie;
     }
 
+    @Override
+    public String toString() {
+        return "My Video Library:\n" + movie;
+    }
 
     /**
      * <p>Java class for anonymous complex type.
@@ -144,8 +148,9 @@ public class VideoLibrary {
      *         &lt;element name="genre" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded"/>
      *         &lt;element name="year">
      *           &lt;simpleType>
-     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}integer">
+     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}int">
      *               &lt;minInclusive value="1888"/>
+     *               &lt;maxInclusive value="2021"/>
      *             &lt;/restriction>
      *           &lt;/simpleType>
      *         &lt;/element>
@@ -190,8 +195,7 @@ public class VideoLibrary {
         protected List<VideoLibrary.Movie.Director> director;
         @XmlElement(required = true)
         protected List<String> genre;
-        @XmlElement(required = true)
-        protected BigInteger year;
+        protected int year;
         protected float rating;
         @XmlAttribute(name = "type")
         protected String type;
@@ -281,24 +285,16 @@ public class VideoLibrary {
         /**
          * Gets the value of the year property.
          * 
-         * @return
-         *     possible object is
-         *     {@link BigInteger }
-         *     
          */
-        public BigInteger getYear() {
+        public int getYear() {
             return year;
         }
 
         /**
          * Sets the value of the year property.
          * 
-         * @param value
-         *     allowed object is
-         *     {@link BigInteger }
-         *     
          */
-        public void setYear(BigInteger value) {
+        public void setYear(int value) {
             this.year = value;
         }
 
@@ -342,6 +338,15 @@ public class VideoLibrary {
             this.type = value;
         }
 
+        @Override
+        public String toString() {
+            return  "Title: \"" + title + '\"' +
+                    "\nDirector(s): " + director +
+                    "\nGenre(s): " + genre +
+                    "\nYear: " + year +
+                    "\nRating (KinoPoisk):" + rating +
+                    "\nType: " + type + '\n';
+        }
 
         /**
          * <p>Java class for anonymous complex type.
@@ -423,6 +428,10 @@ public class VideoLibrary {
                 this.lastName = value;
             }
 
+            @Override
+            public String toString() {
+                return firstName + ' ' + lastName;
+            }
         }
 
     }
