@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:element name = "videoLibrary">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="movie" maxOccurs="unbounded">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="title" type="xsd:string"/>
+                            <xsd:element name="director" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="firstName" type="xsd:string"/>
+                                        <xsd:element name="lastName" type="xsd:string"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="genre" maxOccurs="unbounded" type="xsd:string"/>
+                            <xsd:element name="year">
+                                <xsd:simpleType >
+                                    <xsd:restriction base="xsd:integer">
+                                        <xsd:minInclusive value="1888"/>
+                                    </xsd:restriction>
+                                </xsd:simpleType>
+                            </xsd:element>
+                            <xsd:element name="rating">
+                                <xsd:simpleType>
+                                    <xsd:restriction base="xsd:float">
+                                        <xsd:minInclusive value="1.0"/>
+                                        <xsd:maxInclusive value="10.0"/>
+                                    </xsd:restriction>
+                                </xsd:simpleType>
+                            </xsd:element>
+                        </xsd:sequence>
+                        <xsd:attribute name="type">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:string">
+                                    <xsd:enumeration value="dvd"/>
+                                    <xsd:enumeration value="blueRay"/>
+                                    <xsd:enumeration value="vhs"/>
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:attribute>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>
