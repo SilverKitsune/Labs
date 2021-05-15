@@ -6,8 +6,8 @@
                 <xsd:element name="movie">
                     <xsd:complexType>
                         <xsd:sequence>
-                            <xsd:element name="title" minOccurs="1" maxOccurs="1" type="xsd:string"/>
-                            <xsd:element name="director" minOccurs="1" maxOccurs="unbounded">
+                            <xsd:element name="title" type="xsd:string"/>
+                            <xsd:element name="director" maxOccurs="unbounded">
                                 <xsd:complexType>
                                     <xsd:sequence>
                                         <xsd:element name="firstName" type="xsd:string"/>
@@ -15,15 +15,15 @@
                                     </xsd:sequence>
                                 </xsd:complexType>
                             </xsd:element>
-                            <xsd:element name="genre" minOccurs="1" maxOccurs="unbounded" type="xsd:string"/>
-                            <xsd:element name="year" minOccurs="1" maxOccurs="1">
+                            <xsd:element name="genre" maxOccurs="unbounded" type="xsd:string"/>
+                            <xsd:element name="year">
                                 <xsd:simpleType >
                                     <xsd:restriction base="xsd:integer">
                                         <xsd:minInclusive value="1888"/>
                                     </xsd:restriction>
                                 </xsd:simpleType>
                             </xsd:element>
-                            <xsd:element name="rating" minOccurs="1" maxOccurs="1">
+                            <xsd:element name="rating">
                                 <xsd:simpleType>
                                     <xsd:restriction base="xsd:float">
                                         <xsd:minInclusive value="1.0"/>
