@@ -3,7 +3,7 @@
     <xsd:element name = "videoLibrary">
         <xsd:complexType>
             <xsd:sequence>
-                <xsd:element name="movie">
+                <xsd:element name="movie" maxOccurs="unbounded">
                     <xsd:complexType>
                         <xsd:sequence>
                             <xsd:element name="title" type="xsd:string"/>
