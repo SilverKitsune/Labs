@@ -4,7 +4,8 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 @WebService
-public interface ServiceInterface {
+public interface OldRussianConverter {
     @WebMethod
-    public String getHelloString(String name);
+    double convert(double num, Measures from, Measures to);
 }
+
