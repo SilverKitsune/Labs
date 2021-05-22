@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE videoLibrary [
+        <!ELEMENT videoLibrary (movie*)>
+        <!ELEMENT movie (title, director+,genre+,year,rating)>
+        <!ATTLIST movie type (dvd | blueRay | vhs) #REQUIRED>
+        <!ELEMENT title (#PCDATA)>
+        <!ELEMENT director (firstName, lastName)>
+        <!ELEMENT firstName (#PCDATA)>
+        <!ELEMENT lastName (#PCDATA)>
+        <!ELEMENT genre (#PCDATA)>
+        <!ELEMENT year (#PCDATA)>
+        <!ELEMENT rating (#PCDATA)>
+        ]>
+<videoLibrary>
+    <movie type="dvd">
+        <title>Дьявол носит Prada</title>
+        <director>
+            <firstName>Дэвид</firstName>
+            <lastName>Фрэнкел</lastName>
+        </director>
+        <genre>драма</genre>
+        <genre>комедия</genre>
+        <year>2006</year>
+        <rating>7.6</rating>
+    </movie>
+    <movie type="blueRay">
+        <title>Аватар</title>
+        <director>
+            <firstName>Джеймс</firstName>
+            <lastName>Кэмерон</lastName>
+        </director>
+        <genre>фантастика</genre>
+        <genre>боевик</genre>
+        <genre>драма</genre>
+        <genre>приключение</genre>
+        <year>2009</year>
+        <rating>7.9</rating>
+    </movie>
+    <movie type="blueRay">
+        <title>Проклятье Аннабель</title>
+        <director>
+            <firstName>Джон Р.</firstName>
+            <lastName>Леонетти</lastName>
+        </director>
+        <genre>ужасы</genre>
+        <genre>триллер</genre>
+        <genre>детектив</genre>
+        <year>2014</year>
+        <rating>5.7</rating>
+    </movie>
+    <movie type="blueRay">
+        <title>Жизнь Адель</title>
+        <director>
+            <firstName>Абделатиф</firstName>
+            <lastName>Кешиш</lastName>
+        </director>
+        <genre>драма</genre>
+        <genre>мелодрамма</genre>
+        <year>2013</year>
+        <rating>7.0</rating>
+    </movie>
+    <movie type="vhs">
+        <title>Корпорация монстров</title>
+        <director>
+            <firstName>Пит</firstName>
+            <lastName>Доктер</lastName>
+        </director>
+        <director>
+            <firstName>Дэвид</firstName>
+            <lastName>Силверман</lastName>
+        </director>
+        <director>
+            <firstName>Ли</firstName>
+            <lastName>Анкрич</lastName>
+        </director>
+        <genre>мультфильм</genre>
+        <genre>комедия</genre>
+        <genre>приключение</genre>
+        <genre>семейный</genre>
+        <year>2001</year>
+        <rating>8.1</rating>
+    </movie>
+</videoLibrary>
