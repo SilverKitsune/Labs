@@ -29,21 +29,28 @@ public class MyWebClient {
         // получить ссылку на удаленный от нас объект веб-сервиса
         OldRussianConverter hello = service.getPort(OldRussianConverter.class);
         // Ура! Теперь можно вызывать удаленный метод
-        System.out.println("Выберите исходную меру:");
-        Measures from = inputMeasureType(scanner);
-        if (from != null) {
-            System.out.println("Выберите конечную меру:");
-            Measures to = inputMeasureType(scanner);
-            if (to != null) {
-                System.out.println("Введите число:");
-                double num;
-                if (scanner.hasNextDouble()) {
-                    num = scanner.nextDouble();
-                    System.out.print("Результат: ");
-                    System.out.println(hello.convert(num, from, to));
-                } else
-                    System.out.println("Ошибка ввода! Нужно ввести число");
+        while (true) {
+            System.out.println("Выберите исходную меру:");
+            Measures from = inputMeasureType(scanner);
+            if (from != null) {
+                System.out.println("Выберите конечную меру:");
+                Measures to = inputMeasureType(scanner);
+                if (to != null) {
+                    System.out.println("Введите число:");
+                    double num;
+                    if (scanner.hasNextDouble()) {
+                        num = scanner.nextDouble();
+                        System.out.print("Результат: ");
+                        System.out.println(hello.convert(num, from, to));
+                    } else
+                        System.out.println("Ошибка ввода! Нужно ввести число");
+                }
             }
+            System.out.println("Хотите выйти? (y/n)");
+            scanner.nextLine();
+            String exit = scanner.nextLine();
+            if(exit.equals("y"))
+                break;
         }
     }
 
