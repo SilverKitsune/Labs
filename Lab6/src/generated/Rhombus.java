@@ -1,4 +1,6 @@
-public class Rombus extends Quadrilateral {
+package generated;
+
+public class Rhombus extends Quadrilateral {
 
   public double area() {
   return 0.0;

@@ -1,3 +1,5 @@
+package generated;
+
 public class Trapeze extends Quadrilateral {
 
   public double height;

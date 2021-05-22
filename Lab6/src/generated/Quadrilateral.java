@@ -1,3 +1,5 @@
+package generated;
+
 public class Quadrilateral {
 
   public double sideA;

@@ -1,3 +1,5 @@
+package generated;
+
 public class Rectangle extends Quadrilateral {
 
   public double area() {
