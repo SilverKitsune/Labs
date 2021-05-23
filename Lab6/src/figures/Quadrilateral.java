@@ -22,7 +22,7 @@ public class Quadrilateral {
      */
     private double angle2 = 0.0;
 
-    Quadrilateral(double a, double b, double c, double d, double angle1, double angle2) {
+    public Quadrilateral(double a, double b, double c, double d, double angle1, double angle2) {
         sideA = a;
         sideB = b;
         sideC = c;
@@ -36,7 +36,7 @@ public class Quadrilateral {
         sideB = b;
     }
 
-    protected Quadrilateral(double a, double b, double c, double d) {
+    public Quadrilateral(double a, double b, double c, double d) {
         sideA = a;
         sideB = b;
         sideC = c;

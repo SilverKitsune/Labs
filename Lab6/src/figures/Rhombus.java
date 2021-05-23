@@ -4,7 +4,7 @@ public class Rhombus extends Quadrilateral {
 
     double height;
 
-    Rhombus(double a, double h) {
+    public Rhombus(double a, double h) {
         super(a, a);
         height = h;
     }

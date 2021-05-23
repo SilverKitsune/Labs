@@ -2,7 +2,7 @@ package figures;
 
 public class Rectangle extends Quadrilateral {
 
-    Rectangle(double a, double b) {
+    public Rectangle(double a, double b) {
         super(a, b);
     }
 

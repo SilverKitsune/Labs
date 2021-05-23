@@ -4,12 +4,12 @@ public class Trapeze extends Quadrilateral {
 
     public double height;
 
-    Trapeze(double a, double b, double c, double d, double h) {
+    public Trapeze(double a, double b, double c, double d, double h) {
         super(a, b, c, d);
         height = h;
     }
 
-    Trapeze(double a, double b, double h) {
+    public Trapeze(double a, double b, double h) {
         super(a, b);
         height = h;
     }
