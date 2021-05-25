@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/mdaLabApp.iml" filepath="$PROJECT_DIR$/mdaLabApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/mdaNetBeans.iml" filepath="$PROJECT_DIR$/.idea/mdaNetBeans.iml" />
     </modules>
   </component>
 </project>
