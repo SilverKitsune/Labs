@@ -4,27 +4,51 @@ public class Employee {
 
     private String name;
 
-    private Boolean isHired;
+    public boolean isHired;
 
-    private Boolean isBusy;
+    public boolean isBusy;
 
-    private Integer salary;
+    private int salary;
 
-    private Integer efficiency;
+    private int efficiency;
 
+    public Employee(String name, int efficiency) {
+        this.name = name;
+        this.efficiency = efficiency;
+        salary = 0;
+
+    }
+
+    public void hire(int salary) {
+        isHired = true;
+        this.salary = salary;
+        System.out.println("Сотрудник " + name +" нанят");
+    }
 
     public void fire() {
+        isHired = false;
+        salary = 0;
+        System.out.println("Сотрудник " + name +" уволен");
     }
 
-    public void work() {
+    public void work(Spot spot, boolean toTake) {
+        System.out.println("Сотрудник " + name);
+        if (toTake)
+            spot.take();
+        else
+            spot.free();
     }
 
-    public Integer getSalary() {
-        return null;
+    public String getName() {
+        return name;
     }
 
-    public Integer getEfficiency() {
-        return null;
+    public int getSalary() {
+        return salary;
+    }
+
+    public int getEfficiency() {
+        return efficiency;
     }
 
 }

@@ -2,19 +2,27 @@ package main.java.cloakroom;
 
 public class Spot {
 
-    public Integer number;
+    public int number;
 
-    public Boolean isTaken;
+    public boolean isTaken;
 
+    Spot(int num){
+        number = num;
+        isTaken = false;
+    }
 
     public void take() {
+        System.out.println("Номерок №" + number + " заняли");
+        isTaken = true;
     }
 
     public void free() {
+        System.out.println("Номерок №" + number + " освободили");
+        isTaken = false;
     }
 
-    public Boolean isFree() {
-        return null;
+    public boolean isFree() {
+        return isTaken;
     }
 
 }
