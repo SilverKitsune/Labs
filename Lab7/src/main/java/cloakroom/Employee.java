@@ -19,9 +19,9 @@ public class Employee {
 
     }
 
-    public void hire(int salary) {
+    public void hire() {
         isHired = true;
-        this.salary = salary;
+        setSalary();
         System.out.println("Сотрудник " + name +" нанят");
     }
 
@@ -45,6 +45,10 @@ public class Employee {
 
     public int getSalary() {
         return salary;
+    }
+
+    public void setSalary(){
+        salary = efficiency*100;
     }
 
     public int getEfficiency() {
