@@ -1,10 +1,10 @@
-package main.java.starter;
+package starter;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import main.java.context.CloakroomContext;
-import main.java.controller.CloakroomController;
-import main.java.view.CloakroomView;
+import context.CloakroomContext;
+import controller.CloakroomController;
+import view.CloakroomView;
 
 public class AppStarter extends Application {
     static CloakroomView microwaveView;

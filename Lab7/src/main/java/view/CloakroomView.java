@@ -1,4 +1,4 @@
-package main.java.view;
+package view;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,14 +13,20 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import main.java.resources.ResourceUtils;
+import resources.ResourceUtils;
 
 public class CloakroomView {
 
     private Scene scene;
     private ImageView cloakroomState;
-    private Label timeToCook;
+    private Label timeToWork;
+    private Label emptySpace;
+
+    private Label budget;
+    private Label profit;
+
     private Label logStateLabel;
+    private String employees;
 
     public CloakroomView(){
 
@@ -35,65 +41,87 @@ public class CloakroomView {
 
     public Scene getInitScene(){
         cloakroomState = new ImageView();
-        timeToCook = new Label("00:00");
+
+        budget = new Label("00000");
+        profit = new Label("00000");
+        budget.setFont(new Font("consolas", 18));
+        profit.setFont(new Font("consolas", 18));
+        profit.setTextFill(Color.GREEN);
+
+
+        timeToWork = new Label("01:00");
+        emptySpace = new Label("100");
         logStateLabel = new Label("");
-        timeToCook.setTextFill(Color.WHITE);
-        timeToCook.setFont(new Font("Arial", 24));
-        logStateLabel.setFont(new Font("Arial", 14));
-        timeToCook.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0.0), new Insets(0))));
-        Pane stackPane = new Pane(cloakroomState, timeToCook,logStateLabel);
-        timeToCook.setLayoutX(410.0);
-        timeToCook.setLayoutY(80.0);
+        timeToWork.setTextFill(Color.RED);
+        emptySpace.setTextFill(Color.RED);
+        timeToWork.setFont(new Font("consolas", 46));
+        emptySpace.setFont(new Font("consolas", 64));
+        logStateLabel.setFont(new Font("consolas", 14));
+        logStateLabel.setTextFill(Color.WHITE);
+        timeToWork.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0.0), new Insets(0))));
+        emptySpace.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0.0), new Insets(0))));
+        Pane stackPane = new Pane(cloakroomState, timeToWork,logStateLabel, emptySpace, profit, budget);
+
+        profit.setLayoutX(564.0);
+        profit.setLayoutY(714.0);
+
+        budget.setLayoutX(753.0);
+        budget.setLayoutY(714.0);
+
+        timeToWork.setLayoutX(1352.0);
+        timeToWork.setLayoutY(466.0);
+        emptySpace.setLayoutX(592.0);
+        emptySpace.setLayoutY(11.0);
         logStateLabel.setLayoutX(34);
-        logStateLabel.setLayoutY(342);
-        scene = new Scene(stackPane, 500, 380);
+        logStateLabel.setLayoutY(600);
+        scene = new Scene(stackPane, 1528, 743);
         scene.setFill(Color.WHITE);
         return scene;
     }
 
     public void cloakroomToOpen(){
-        changeImageTo(ResourceUtils.getMicrowaveEmpty());
+        changeImageTo(ResourceUtils.getCloakroomOpen(employees));
     }
 
     public void cloakroomToReadyToWork(){
-        changeImageTo(ResourceUtils.getMicrowaveToReadyToCook());
+        changeImageTo(ResourceUtils.getCloakroomReadyToWork());
     }
 
     public void cloakroomToWorking(){
-        changeImageTo(ResourceUtils.getMicrowaveCooking());
+        changeImageTo(ResourceUtils.getCloakroomWorking());
     }
 
     public void cloakroomToDontTake(){
-        changeImageTo(ResourceUtils.getMicrowaveInterrupted());
+        changeImageTo(ResourceUtils.getCloakroomNoSpot());
     }
 
     public void cloakroomToClose(){
-        changeImageTo(ResourceUtils.getMicrowaveToCookingComplete());
+        changeImageTo(ResourceUtils.getCloakroomClosed());
     }
 
     public void setState(String state) {
-        //this.logStateLabel.setText(state);
+        this.logStateLabel.setText(state);
     }
 
     public void setMouseEvent(EventHandler<MouseEvent> mouseEventEventHandler) {
         scene.setOnMouseClicked(mouseEventEventHandler);
     }
 
-    private void changeImageTo(Image microwaveToReadyToCook) {
-        if(cloakroomState.getImage()!=microwaveToReadyToCook)
-            cloakroomState.setImage(microwaveToReadyToCook);
+    private void changeImageTo(Image image) {
+        if(cloakroomState.getImage()!=image)
+            cloakroomState.setImage(image);
     }
 
-    public void setTimeToCook(String timeToCookStr) {
+    public void setTimeToWork(String timeToCookStr) {
 
     }
 
-    public void editEmployees(){
-        //TODO
+    public void editEmployees(String names){
+        employees = names;
     }
 
     public void showSettings(){
-
+        //TODO
     }
 
 }

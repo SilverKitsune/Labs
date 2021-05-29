@@ -1,4 +1,4 @@
-package main.java.controller;
+package controller;
 
 import au.com.ds.ef.EasyFlow;
 import au.com.ds.ef.call.ContextHandler;
@@ -6,11 +6,11 @@ import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import main.java.cloakroom.Cloakroom;
-import main.java.cloakroom.Employee;
-import main.java.context.CloakroomContext;
-import main.java.resources.ResourceUtils;
-import main.java.view.CloakroomView;
+import cloakroom.Cloakroom;
+import cloakroom.Employee;
+import context.CloakroomContext;
+import resources.ResourceUtils;
+import view.CloakroomView;
 
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
@@ -18,8 +18,8 @@ import java.util.concurrent.Executors;
 
 import static au.com.ds.ef.FlowBuilder.from;
 import static au.com.ds.ef.FlowBuilder.on;
-import static main.java.enums.CloakroomEvents.*;
-import static main.java.enums.CloakroomStates.*;
+import static enums.CloakroomEvents.*;
+import static enums.CloakroomStates.*;
 
 public class CloakroomController {
     private Cloakroom cloakroom;
@@ -40,6 +40,7 @@ public class CloakroomController {
         initStateMachine(cloakroomContext);
         initViewTriggersToStateMachineEvents(cloakroomContext);
         bindTimeToCook(cloakroom.getWorkingDay());
+
     }
 
     private void initButtons() {
@@ -59,18 +60,19 @@ public class CloakroomController {
         cloakroomFlow.start(cloakroomContext);
     }
 
-    /*OPEN, READY_TO_WORK, WORKING, DONT_TAKE, CLOSE*/
     private void initEvents(EasyFlow<CloakroomContext> cloakroomFlow) {
         cloakroomFlow.whenEnter(OPEN, (ContextHandler<CloakroomContext>) flowContext -> {
             logStateMachine(flowContext);
+            if (!isStopped) {
+                cloakroom.hireEmployee(new Employee("George", 1));
+                cloakroom.hireEmployee(new Employee("John", 2));
+                cloakroom.hireEmployee(new Employee("Paul", 3));
+            }
+            cloakroomView.editEmployees(cloakroom.getEmployees());
             cloakroomView.cloakroomToOpen();
             cloakroom.setSpots(100);
-            cloakroom.hireEmployee(new Employee("George", 1));
-            cloakroom.hireEmployee(new Employee("John", 2));
-            cloakroom.hireEmployee(new Employee("Paul", 3));
             isStopped = false;
             isApply = false;
-
         });
 
         cloakroomFlow.whenEnter(READY_TO_WORK, (ContextHandler<CloakroomContext>) flowContext -> {
@@ -100,6 +102,7 @@ public class CloakroomController {
             cloakroomView.cloakroomToClose();
             isStopped = true;
             isWorking = false;
+            isApply = false;
         });
     }
 
@@ -112,7 +115,6 @@ public class CloakroomController {
     }
 
     private void initViewTriggersToStateMachineEvents(CloakroomContext cloakroomContext) {
-        //TODO
         EventHandler<MouseEvent> mouseEventEventHandler = event -> {
             double x = event.getX();
             double y = event.getY();
@@ -137,21 +139,22 @@ public class CloakroomController {
                                 cloakroom.hireEmployee(button.getName());
                                 button.setClicked(true);
                             }
-                            cloakroomView.editEmployees();
+                            cloakroomView.editEmployees(cloakroom.getEmployees());
                         }
+                        cloakroomView.cloakroomToOpen();
                         break;
                     case "Apply":
-                        if(!isApply){
+                        if (!isApply) {
                             cloakroomContext.safeTrigger(HIRE_EMPLOYEES);
                         }
                         break;
                     case "NewDay":
-                        if(isStopped){
+                        if (isStopped) {
                             cloakroomContext.safeTrigger(START);
                         }
                         break;
                     case "Settings":
-                        if(!isWorking){
+                        if (!isWorking) {
                             showSettings();
                         }
                         break;
@@ -181,15 +184,18 @@ public class CloakroomController {
                         on(VISITOR_GIVE_JACKET).to(WORKING1).transit(
                                 on(VISITOR_GIVE_JACKET).to(WORKING2).transit(
                                         on(VISITOR_TAKE_JACKET).to(WORKING1),
-                                        on(VISITOR_GIVE_JACKET).to(WORKING1)
+                                        on(VISITOR_GIVE_JACKET).to(WORKING1),
+                                        on(NO_SPOT).to(DONT_TAKE).transit(
+                                                on(VISITOR_TAKE_JACKET).to(WORKING1),
+                                                on(STOP).to(CLOSE)
+                                        ),
+                                        on(STOP).to(CLOSE).transit(
+                                                on(START).to(OPEN)
+                                        )
                                 ),
                                 on(VISITOR_TAKE_JACKET).to(WORKING2),
-                                on(NO_SPOT).to(DONT_TAKE).transit(
-                                        on(VISITOR_TAKE_JACKET).to(WORKING1)
-                                ),
-                                on(STOP).to(CLOSE).transit(
-                                        on(START).to(OPEN)
-                                )
+                                on(NO_SPOT).to(DONT_TAKE),
+                                on(STOP).to(CLOSE)
                         )
                 )
         ).executor(stateMachine_executor);
@@ -213,6 +219,6 @@ public class CloakroomController {
 
     private void setTimeCookMills(int newTimeToCook) {
         String timeToCookStr = (newTimeToCook > 0) ? ResourceUtils.convertMillisecondsToMicrowaveTimestamp(newTimeToCook) : "00:00";
-        Platform.runLater(() -> cloakroomView.setTimeToCook(timeToCookStr));
+        Platform.runLater(() -> cloakroomView.setTimeToWork(timeToCookStr));
     }
 }

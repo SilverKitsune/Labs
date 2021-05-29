@@ -1,4 +1,4 @@
-package main.java.context;
+package context;
 
 import au.com.ds.ef.StatefulContext;
 
