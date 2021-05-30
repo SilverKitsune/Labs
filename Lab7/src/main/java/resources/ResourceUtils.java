@@ -74,4 +74,31 @@ public class ResourceUtils {
         }
         return minutess_str + ":" + seconds_str;
     }
+
+    public static String convertSpotsToString(Integer emptySpace) {
+        if (emptySpace < 100 && emptySpace > 9)
+            return "0" + emptySpace.toString();
+        if (emptySpace < 10)
+            return "00" + emptySpace.toString();
+        return emptySpace.toString();
+    }
+
+    public static String convertMoneyToString(Integer emptySpace) {
+
+        String negative = "";
+        if (emptySpace < 0) {
+            negative = "-";
+            emptySpace = Math.abs(emptySpace);
+        }
+        if (emptySpace < 10000 && emptySpace >= 1000)
+            return negative + "0" + emptySpace.toString();
+        if (emptySpace < 1000 && emptySpace >= 100)
+            return negative + "00" + emptySpace.toString();
+        if (emptySpace < 100 && emptySpace > 9)
+            return negative + "000" + emptySpace.toString();
+        if (emptySpace < 10)
+            return negative + "0000" + emptySpace.toString();
+
+        return negative + emptySpace.toString();
+    }
 }

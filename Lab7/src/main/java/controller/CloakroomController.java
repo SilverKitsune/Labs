@@ -33,13 +33,16 @@ public class CloakroomController {
 
 
     public CloakroomController(CloakroomContext cloakroomContext, CloakroomView cloakroomView) {
-        cloakroom = new Cloakroom(cloakroomContext, 300, 10000);
+        cloakroom = new Cloakroom(cloakroomContext, 300);
         this.cloakroomView = cloakroomView;
         stateMachine_executor = Executors.newSingleThreadExecutor();
         initButtons();
         initStateMachine(cloakroomContext);
         initViewTriggersToStateMachineEvents(cloakroomContext);
-        bindTimeToCook(cloakroom.getWorkingDay());
+        bindTimeToWork(cloakroom.getWorkingDay());
+        bindBudget(cloakroom.getBudget());
+        bindEmptySpace(cloakroom.getFreeSpace());
+        bindProfit(cloakroom.getProfit());
 
     }
 
@@ -68,6 +71,9 @@ public class CloakroomController {
                 cloakroom.hireEmployee(new Employee("John", 2));
                 cloakroom.hireEmployee(new Employee("Paul", 3));
             }
+            cloakroom.setTimeToWork(60000);
+            cloakroom.setBudget(4000);
+            cloakroom.setProfit(4000);
             cloakroomView.editEmployees(cloakroom.getEmployees());
             cloakroomView.cloakroomToOpen();
             cloakroom.setSpots(100);
@@ -168,16 +174,6 @@ public class CloakroomController {
         //TODO
     }
 
-   /* private int getNumberButtonByCoord(int buttonStart, int lengthNumberButton, int lengthWithoutButton) {
-        int numberButton = 0;
-        if (buttonStart < lengthNumberButton) numberButton = 1;
-        else if (buttonStart < lengthNumberButton + lengthWithoutButton) return numberButton;
-        else if (buttonStart < lengthNumberButton * 2 + lengthWithoutButton) numberButton = 2;
-        else if (buttonStart < lengthNumberButton * 2 + lengthWithoutButton * 2) return numberButton;
-        else numberButton = 3;
-        return numberButton;
-    }*/
-
     private EasyFlow<CloakroomContext> initStates() {
         return from(OPEN).transit(
                 on(HIRE_EMPLOYEES).to(READY_TO_WORK).transit(
@@ -210,15 +206,38 @@ public class CloakroomController {
         cloakroom.stopApplication();
     }
 
-    private void bindTimeToCook(IntegerProperty timeToCook) {
-        timeToCook.addListener((observable, oldValue, newValue) -> {
+    private void bindTimeToWork(IntegerProperty timeToWork) {
+        timeToWork.addListener((observable, oldValue, newValue) -> {
             int newTimeToCook = newValue.intValue();
-            setTimeCookMills(newTimeToCook);
+            setTimeToWorkMills(newTimeToCook);
         });
     }
 
-    private void setTimeCookMills(int newTimeToCook) {
-        String timeToCookStr = (newTimeToCook > 0) ? ResourceUtils.convertMillisecondsToMicrowaveTimestamp(newTimeToCook) : "00:00";
+    private void bindEmptySpace(IntegerProperty emptySpace) {
+        emptySpace.addListener((observable, oldValue, newValue) -> {
+            int newEmptySpace = newValue.intValue();
+            Platform.runLater(() -> cloakroomView.setEmptySpace(ResourceUtils.convertSpotsToString(newEmptySpace)));
+        });
+    }
+
+    private void bindProfit(IntegerProperty profit) {
+        profit.addListener((observable, oldValue, newValue) -> {
+            int newProfit = newValue.intValue();
+            Platform.runLater(() -> cloakroomView.setProfit(ResourceUtils.convertMoneyToString(newProfit),
+                    newProfit <= 0));
+        });
+    }
+
+    private void bindBudget(IntegerProperty budget) {
+        budget.addListener((observable, oldValue, newValue) -> {
+            int newBudget = newValue.intValue();
+            Platform.runLater(() -> cloakroomView.setBudget(ResourceUtils.convertMoneyToString(newBudget)));
+        });
+    }
+
+    private void setTimeToWorkMills(int newTimeToWork) {
+        String timeToCookStr = (newTimeToWork > 0) ?
+                ResourceUtils.convertMillisecondsToMicrowaveTimestamp(newTimeToWork) : "00:00";
         Platform.runLater(() -> cloakroomView.setTimeToWork(timeToCookStr));
     }
 }

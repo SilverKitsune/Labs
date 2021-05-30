@@ -1,28 +1,30 @@
 package cloakroom;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Spot {
 
     public int number;
 
-    public boolean isTaken;
+    public AtomicBoolean isTaken;
 
     Spot(int num){
+        isTaken = new AtomicBoolean(false);
         number = num;
-        isTaken = false;
     }
 
     public void take() {
         System.out.println("Номерок №" + number + " заняли");
-        isTaken = true;
+        isTaken.set(true);
     }
 
     public void free() {
         System.out.println("Номерок №" + number + " освободили");
-        isTaken = false;
+        isTaken.set(false);
     }
 
     public boolean isFree() {
-        return isTaken;
+        return isTaken.get();
     }
 
 }

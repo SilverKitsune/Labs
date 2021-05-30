@@ -6,8 +6,6 @@ public class Employee {
 
     public boolean isHired;
 
-    public boolean isBusy;
-
     private int salary;
 
     private int efficiency;
@@ -22,16 +20,17 @@ public class Employee {
     public void hire() {
         isHired = true;
         setSalary();
-        System.out.println("Сотрудник " + name +" нанят");
+        System.out.println("Сотрудник " + name + " нанят");
     }
 
     public void fire() {
         isHired = false;
         salary = 0;
-        System.out.println("Сотрудник " + name +" уволен");
+        System.out.println("Сотрудник " + name + " уволен");
     }
 
-    public void work(Spot spot, boolean toTake) {
+    public void work(Spot spot, boolean toTake) throws InterruptedException {
+        Thread.sleep(Math.abs(efficiency - 4) * 100);
         System.out.println("Сотрудник " + name);
         if (toTake)
             spot.take();
@@ -47,12 +46,8 @@ public class Employee {
         return salary;
     }
 
-    public void setSalary(){
-        salary = efficiency*100;
-    }
-
-    public int getEfficiency() {
-        return efficiency;
+    public void setSalary() {
+        salary = efficiency * 10;
     }
 
 }

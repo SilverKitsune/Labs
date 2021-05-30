@@ -16,50 +16,37 @@ import static enums.CloakroomEvents.*;
 public class Cloakroom {
 
     private LinkedList<Employee> listOfEmployees;
-
     private LinkedList<Spot> spots;
-    private LinkedList<Integer> notEmptySpots;
+    private LinkedList<IntegerProperty> notEmptySpots;
 
-    public int budget;
+    public IntegerProperty budget;
+    public IntegerProperty profit;
+    private final IntegerProperty workingDay;
+    private IntegerProperty freeSpace;
 
     private AtomicBoolean isNotEnd;
     private AtomicBoolean isReady;
     private AtomicBoolean isPaused;
+
     private final CloakroomContext cloakroomContext;
     private ExecutorService timerService;
     private final Runnable runnable;
 
-    private final IntegerProperty workingDay;
     private final int WORKING_DAY = 60000;
-    private IntegerProperty freeSpace;
 
-    public IntegerProperty getWorkingDay(){
-        return workingDay;
-    }
-
-    public String getEmployees(){
-        StringBuilder names = new StringBuilder();
-        for (Employee e : listOfEmployees) {
-            if (e.isHired){
-                names.append("_");
-                names.append(e.getName());
-            }
-        }
-        return names.toString();
-    }
-
-    public Cloakroom(CloakroomContext context, int period, int budget) {
+    public Cloakroom(CloakroomContext context, int period) {
         cloakroomContext = context;
         notEmptySpots = new LinkedList<>();
         listOfEmployees = new LinkedList<>();
+        workingDay = new SimpleIntegerProperty(WORKING_DAY);
+        freeSpace = new SimpleIntegerProperty(100);
+        budget = new SimpleIntegerProperty(0);
+        profit = new SimpleIntegerProperty(0);
 
-        this.budget = budget;
         timerService = Executors.newSingleThreadExecutor();
         isNotEnd = new AtomicBoolean(true);
         isPaused = new AtomicBoolean(false);
         isReady = new AtomicBoolean(false);
-        workingDay = new SimpleIntegerProperty(WORKING_DAY);
-        freeSpace = new SimpleIntegerProperty(100);
 
         runnable = () -> {
             while (isNotEnd.get()) {
@@ -73,7 +60,7 @@ public class Cloakroom {
                                 cloakroomContext.safeTrigger(STOP);
                                 isReady.set(false);
                             } else {
-                                work();
+                                Cloakroom.this.work();
                                 Thread.sleep(period);
                             }
                         }
@@ -86,26 +73,16 @@ public class Cloakroom {
         timerService.submit(runnable);
     }
 
-    public void work(){
-        Random random = new Random();
-        int employee = getRandomEmployee(random);
-        if (random.nextBoolean() && !isPaused.get()) {
-            Spot s = getFirstFreeSpot();
-            if (s != null){
-                cloakroomContext.safeTrigger(VISITOR_GIVE_JACKET);
-                takeJacket(s, employee);
-            }
-            else {
-                cloakroomContext.safeTrigger(NO_SPOT);
-                isPaused.set(true);
-            }
-        } else {
-            int num = getRandomNotEmptySpot(random);
-            if (num > 0) {
-                cloakroomContext.safeTrigger(VISITOR_TAKE_JACKET);
-                giveJacket(num, employee);
-            }
-        }
+    public void setBudget(int newBudget) {
+        budget.set(newBudget);
+    }
+
+    public void setTimeToWork(int newTime) {
+        workingDay.set(newTime);
+    }
+
+    public void setProfit(int newProfit) {
+        profit.set(newProfit);
     }
 
     public void setSpots(int count) {
@@ -115,25 +92,26 @@ public class Cloakroom {
         }
     }
 
-    private int getRandomEmployee(Random random) {
-        int num;
-        do {
-            num = random.nextInt(3);
-        } while (!listOfEmployees.get(num).isHired);
-        return num;
-    }
-
-    private int getRandomNotEmptySpot(Random random) {
-        if (!notEmptySpots.isEmpty())
-            return notEmptySpots.get(random.nextInt(notEmptySpots.size()));
-        else
-            return -1;
-    }
-
-    public void setListOfEmployees(LinkedList<Employee> listOfEmployees) {
-        this.listOfEmployees = listOfEmployees;
-        for (Employee e : this.listOfEmployees) {
-            e.hire();
+    private void work() throws InterruptedException {
+        Random random = new Random();
+        int employee = getRandomEmployee(random);
+        int randomInt = random.nextInt(10);
+        if ((randomInt < 7 && workingDay.get() > WORKING_DAY*0.5) || (randomInt < 3 && workingDay.get() <= WORKING_DAY*0.5)) {
+            if (freeSpace.get() > 0) {
+                Spot s = getFirstFreeSpot();
+                cloakroomContext.safeTrigger(VISITOR_GIVE_JACKET);
+                takeJacket(s, employee);
+            } else {
+                cloakroomContext.safeTrigger(NO_SPOT);
+                isPaused.set(true);
+            }
+        }
+        if ((randomInt > 7 && workingDay.get() > WORKING_DAY*0.5) || (randomInt > 3 && workingDay.get() <= WORKING_DAY*0.5)) {
+            IntegerProperty num = getRandomNotEmptySpot(random);
+            if (num != null) {
+                cloakroomContext.safeTrigger(VISITOR_TAKE_JACKET);
+                giveJacket(num.get(), employee);
+            }
         }
     }
 
@@ -156,48 +134,84 @@ public class Cloakroom {
         }
     }
 
+    private void takeJacket(Spot s, int employeeIndex) throws InterruptedException {
+        Employee employee = listOfEmployees.get(employeeIndex);
+        employee.work(s, true);
+        notEmptySpots.add(new SimpleIntegerProperty(s.number));
+        int newFreeSpace = freeSpace.get() - 1;
+        freeSpace.set(newFreeSpace);
+        paySalary(employee.getSalary());
+    }
+
+    private void giveJacket(int number, int employeeIndex) throws InterruptedException {
+        Employee employee = listOfEmployees.get(employeeIndex);
+        employee.work(spots.get(number - 1), false);
+        notEmptySpots.remove(new SimpleIntegerProperty(number));
+        int newFreeSpace = freeSpace.get() + 1;
+        freeSpace.set(newFreeSpace);
+        paySalary(employee.getSalary());
+    }
+
+    private void paySalary(int salary) {
+        setProfit(profit.getValue() - salary);
+    }
+
+    public IntegerProperty getWorkingDay() {
+        return workingDay;
+    }
+
+    public String getEmployees() {
+        StringBuilder names = new StringBuilder();
+        for (Employee e : listOfEmployees) {
+            if (e.isHired) {
+                names.append("_");
+                names.append(e.getName());
+            }
+        }
+        return names.toString();
+    }
+
+    private int getRandomEmployee(Random random) {
+        int num;
+        do {
+            num = random.nextInt(3);
+        } while (!listOfEmployees.get(num).isHired);
+        return num;
+    }
+
+    private IntegerProperty getRandomNotEmptySpot(Random random) {
+        if (!notEmptySpots.isEmpty())
+            return notEmptySpots.get(random.nextInt(notEmptySpots.size()));
+        else
+            return null;
+    }
+
     public Spot getFirstFreeSpot() {
         for (Spot s : spots) {
-            if (!s.isTaken)
+            if (s.isFree())
                 return s;
         }
         return null;
     }
 
-    public void takeJacket(Spot s, int employeeIndex) {
-        Employee employee = listOfEmployees.get(employeeIndex);
-        employee.work(s, true);
-        notEmptySpots.add(s.number);
-        freeSpace.set(freeSpace.get()-1);
-        paySalary(employee.getSalary());
+    public IntegerProperty getFreeSpace() {
+        return freeSpace;
     }
 
-    public void giveJacket(int number, int employeeIndex) {
-        Employee employee = listOfEmployees.get(employeeIndex);
-        employee.work(spots.get(number-1), false);
-        notEmptySpots.remove(new Integer(number));
-        freeSpace.set(freeSpace.get()+1);
-        paySalary(employee.getSalary());
-    }
-
-    public int getFreeSpace() {
-        return freeSpace.get();
-    }
-
-    public int getBudget(){
+    public IntegerProperty getBudget() {
         return budget;
     }
 
-    public void paySalary(int salary) {
-        budget -= salary;
-    }
-
-    public void makeReady(){
+    public void makeReady() {
         isReady.set(true);
     }
 
     public void stopApplication() {
         isNotEnd.set(false);
         timerService.shutdown();
+    }
+
+    public IntegerProperty getProfit() {
+        return profit;
     }
 }

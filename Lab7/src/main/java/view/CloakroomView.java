@@ -28,18 +28,18 @@ public class CloakroomView {
     private Label logStateLabel;
     private String employees;
 
-    public CloakroomView(){
+    public CloakroomView() {
 
     }
 
-    public Scene getScene(){
+    public Scene getScene() {
         if (scene == null) {
             scene = getInitScene();
         }
         return scene;
     }
 
-    public Scene getInitScene(){
+    public Scene getInitScene() {
         cloakroomState = new ImageView();
 
         budget = new Label("00000");
@@ -60,7 +60,7 @@ public class CloakroomView {
         logStateLabel.setTextFill(Color.WHITE);
         timeToWork.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0.0), new Insets(0))));
         emptySpace.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(0.0), new Insets(0))));
-        Pane stackPane = new Pane(cloakroomState, timeToWork,logStateLabel, emptySpace, profit, budget);
+        Pane stackPane = new Pane(cloakroomState, timeToWork, logStateLabel, emptySpace, profit, budget);
 
         profit.setLayoutX(564.0);
         profit.setLayoutY(714.0);
@@ -79,48 +79,64 @@ public class CloakroomView {
         return scene;
     }
 
-    public void cloakroomToOpen(){
+    public void cloakroomToOpen() {
         changeImageTo(ResourceUtils.getCloakroomOpen(employees));
     }
 
-    public void cloakroomToReadyToWork(){
+    public void cloakroomToReadyToWork() {
         changeImageTo(ResourceUtils.getCloakroomReadyToWork());
     }
 
-    public void cloakroomToWorking(){
+    public void cloakroomToWorking() {
         changeImageTo(ResourceUtils.getCloakroomWorking());
     }
 
-    public void cloakroomToDontTake(){
+    public void cloakroomToDontTake() {
         changeImageTo(ResourceUtils.getCloakroomNoSpot());
     }
 
-    public void cloakroomToClose(){
+    public void cloakroomToClose() {
         changeImageTo(ResourceUtils.getCloakroomClosed());
     }
 
-    public void setState(String state) {
-        this.logStateLabel.setText(state);
+    private void changeImageTo(Image image) {
+        if (cloakroomState.getImage() != image)
+            cloakroomState.setImage(image);
     }
 
     public void setMouseEvent(EventHandler<MouseEvent> mouseEventEventHandler) {
         scene.setOnMouseClicked(mouseEventEventHandler);
     }
 
-    private void changeImageTo(Image image) {
-        if(cloakroomState.getImage()!=image)
-            cloakroomState.setImage(image);
+    public void setState(String state) {
+        this.logStateLabel.setText(state);
     }
 
-    public void setTimeToWork(String timeToCookStr) {
-
+    public void setTimeToWork(String timeToWorkStr) {
+        timeToWork.setText(timeToWorkStr);
     }
 
-    public void editEmployees(String names){
+    public void setEmptySpace(String emptySpaceStr) {
+        emptySpace.setText(emptySpaceStr);
+    }
+
+    public void setBudget(String budgetStr) {
+        budget.setText(budgetStr);
+    }
+
+    public void setProfit(String profitStr, boolean isRed) {
+        if (isRed)
+            profit.setTextFill(Color.RED);
+        else
+            profit.setTextFill(Color.GREEN);
+        profit.setText(profitStr);
+    }
+
+    public void editEmployees(String names) {
         employees = names;
     }
 
-    public void showSettings(){
+    public void showSettings() {
         //TODO
     }
 
