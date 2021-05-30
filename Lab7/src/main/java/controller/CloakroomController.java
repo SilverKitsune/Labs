@@ -7,7 +7,6 @@ import javafx.beans.property.IntegerProperty;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import cloakroom.Cloakroom;
-import cloakroom.Employee;
 import context.CloakroomContext;
 import resources.ResourceUtils;
 import view.CloakroomView;
@@ -16,7 +15,6 @@ import view.SettingsView;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 
 import static au.com.ds.ef.FlowBuilder.from;
 import static au.com.ds.ef.FlowBuilder.on;
@@ -69,9 +67,7 @@ public class CloakroomController {
         cloakroomFlow.whenEnter(OPEN, (ContextHandler<CloakroomContext>) flowContext -> {
             logStateMachine(flowContext);
             if (!isStopped) {
-                cloakroom.hireEmployee(new Employee("George", 1));
-                cloakroom.hireEmployee(new Employee("John", 2));
-                cloakroom.hireEmployee(new Employee("Paul", 3));
+                cloakroom.hireEmployees();
             }
 
             cloakroom.setSpots(100);
