@@ -6,6 +6,8 @@ public class Employee {
 
     public boolean isHired;
 
+    public boolean isBusy;
+
     private int salary;
 
     private int efficiency;
@@ -14,7 +16,7 @@ public class Employee {
         this.name = name;
         this.efficiency = efficiency;
         salary = 0;
-
+        isBusy = false;
     }
 
     public void hire() {

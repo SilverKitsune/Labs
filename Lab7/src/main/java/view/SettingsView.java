@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -14,8 +15,7 @@ public class SettingsView {
 
     private Dialog<Settings> dialog;
 
-    public SettingsView() {
-
+    public SettingsView(Settings settings) {
         dialog = new Dialog<>();
         dialog.setTitle("Диалог с микроволновкой");
         dialog.setHeaderText("Какую еду вы хотите приготовить?");
@@ -30,7 +30,7 @@ public class SettingsView {
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
 
-        TextField budgetField = new TextField();
+        TextField budgetField = new TextField(""+settings.getBudget());
         budgetField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 String value = newValue.replaceAll("[^\\d]", "");
@@ -39,7 +39,7 @@ public class SettingsView {
         });
         budgetField.setPromptText("Budget");
 
-        TextField periodField = new TextField();
+        TextField periodField = new TextField(""+settings.getPeriod());
         periodField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 String value = newValue.replaceAll("[^\\d]", "");
@@ -48,7 +48,7 @@ public class SettingsView {
         });
         periodField.setPromptText("Period");
 
-        TextField time = new TextField();
+        TextField time = new TextField(""+settings.getWorkingDay());
         time.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 String value = newValue.replaceAll("[^\\d]", "");
@@ -68,26 +68,22 @@ public class SettingsView {
 
 // Enable/Disable login button depending on whether a username was entered.
         Node loginButton = dialog.getDialogPane().lookupButton(ок);
-        loginButton.setDisable(true);
+        //loginButton.setDisable(true);
 
 // Do some validation (using the Java 8 lambda syntax).
-        time.textProperty().addListener((observable, oldValue, newValue) -> {
+        /*time.textProperty().addListener((observable, oldValue, newValue) -> {
             loginButton.setDisable(newValue.trim().isEmpty());
-        });
+        });*/
 
         dialog.getDialogPane().setContent(grid);
 
 // Request focus on the username field by default.
-        Platform.runLater(budgetField::requestFocus);
+        //Platform.runLater(budgetField::requestFocus);
 
 // Convert the result to a username-password-pair when the login button is clicked.
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ок) {
                 int timeToWork = Integer.parseInt(time.getText());
-                /*if(timeToCook>300){
-                    timeToCook = timeToCook / 300;
-                    timeToCook = timeToCook * 300;
-                }*/
                 int period = Integer.parseInt(periodField.getText());
                 int budget = Integer.parseInt(budgetField.getText());
                 return new Settings(budget, period, timeToWork);
@@ -99,8 +95,17 @@ public class SettingsView {
 
     }
 
-    public void showAndWait(Consumer<Settings> foodConsumer) {
-        Optional<Settings> result = dialog.showAndWait();
-        result.ifPresent(foodConsumer);
+    public Settings showAndWait() {
+        try {
+            Optional<Settings> result = dialog.showAndWait();
+            return result.get();
+        }catch (NoSuchElementException e){
+            return null;
+        }
+
+    }
+
+    public Settings getResult(){
+        return dialog.getResult();
     }
 }

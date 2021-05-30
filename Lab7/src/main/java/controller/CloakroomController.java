@@ -11,10 +11,12 @@ import cloakroom.Employee;
 import context.CloakroomContext;
 import resources.ResourceUtils;
 import view.CloakroomView;
+import view.SettingsView;
 
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 import static au.com.ds.ef.FlowBuilder.from;
 import static au.com.ds.ef.FlowBuilder.on;
@@ -25,15 +27,15 @@ public class CloakroomController {
     private Cloakroom cloakroom;
     private CloakroomView cloakroomView;
     private ExecutorService stateMachine_executor;
-    private int eatTimeCook = 0;
     private boolean isApply = false;
     private boolean isStopped = false;
     private boolean isWorking = false;
     private LinkedList<MyButton> buttons;
-
+    Settings settings;
 
     public CloakroomController(CloakroomContext cloakroomContext, CloakroomView cloakroomView) {
-        cloakroom = new Cloakroom(cloakroomContext, 300);
+        settings = new Settings();
+        cloakroom = new Cloakroom(cloakroomContext);
         this.cloakroomView = cloakroomView;
         stateMachine_executor = Executors.newSingleThreadExecutor();
         initButtons();
@@ -71,12 +73,11 @@ public class CloakroomController {
                 cloakroom.hireEmployee(new Employee("John", 2));
                 cloakroom.hireEmployee(new Employee("Paul", 3));
             }
-            cloakroom.setTimeToWork(60000);
-            cloakroom.setBudget(4000);
-            cloakroom.setProfit(4000);
+
+            cloakroom.setSpots(100);
             cloakroomView.editEmployees(cloakroom.getEmployees());
             cloakroomView.cloakroomToOpen();
-            cloakroom.setSpots(100);
+            setSettings();
             isStopped = false;
             isApply = false;
         });
@@ -171,7 +172,21 @@ public class CloakroomController {
     }
 
     private void showSettings() {
-        //TODO
+        SettingsView settingsView = new SettingsView(settings);
+        Settings _settings = settingsView.showAndWait();
+        if(_settings != null){
+            settings = _settings;
+            setSettings();
+        }
+
+    }
+
+    private void setSettings() {
+        cloakroom.setLengthOfTheDay(settings.getWorkingDay());
+        cloakroom.setTimeToWork(settings.getWorkingDay());
+        cloakroom.setBudget(settings.getBudget());
+        cloakroom.setProfit(settings.getBudget());
+        cloakroom.setPeriod(settings.getPeriod());
     }
 
     private EasyFlow<CloakroomContext> initStates() {

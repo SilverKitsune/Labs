@@ -24,7 +24,7 @@ public class Spot {
     }
 
     public boolean isFree() {
-        return isTaken.get();
+        return !isTaken.get();
     }
 
 }

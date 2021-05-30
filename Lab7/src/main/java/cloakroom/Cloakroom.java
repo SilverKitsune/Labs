@@ -17,36 +17,44 @@ public class Cloakroom {
 
     private LinkedList<Employee> listOfEmployees;
     private LinkedList<Spot> spots;
-    private LinkedList<IntegerProperty> notEmptySpots;
+    private LinkedList<Integer> notEmptySpots;
 
     public IntegerProperty budget;
     public IntegerProperty profit;
     private final IntegerProperty workingDay;
     private IntegerProperty freeSpace;
+    private IntegerProperty lengthOfTheDay;
 
     private AtomicBoolean isNotEnd;
     private AtomicBoolean isReady;
     private AtomicBoolean isPaused;
 
+    //private LinkedList<AtomicBoolean> isEmpl;
+
     private final CloakroomContext cloakroomContext;
     private ExecutorService timerService;
     private final Runnable runnable;
 
-    private final int WORKING_DAY = 60000;
 
-    public Cloakroom(CloakroomContext context, int period) {
+    private int period;
+
+    public Cloakroom(CloakroomContext context) {
         cloakroomContext = context;
         notEmptySpots = new LinkedList<>();
         listOfEmployees = new LinkedList<>();
-        workingDay = new SimpleIntegerProperty(WORKING_DAY);
+        workingDay = new SimpleIntegerProperty(0);
         freeSpace = new SimpleIntegerProperty(100);
         budget = new SimpleIntegerProperty(0);
         profit = new SimpleIntegerProperty(0);
-
+        lengthOfTheDay = new SimpleIntegerProperty(0);
         timerService = Executors.newSingleThreadExecutor();
         isNotEnd = new AtomicBoolean(true);
         isPaused = new AtomicBoolean(false);
         isReady = new AtomicBoolean(false);
+        /*isEmpl = new LinkedList<>();
+        isEmpl.add(new AtomicBoolean(false));
+        isEmpl.add(new AtomicBoolean(false));
+        isEmpl.add(new AtomicBoolean(false));*/
 
         runnable = () -> {
             while (isNotEnd.get()) {
@@ -73,6 +81,7 @@ public class Cloakroom {
         timerService.submit(runnable);
     }
 
+
     public void setBudget(int newBudget) {
         budget.set(newBudget);
     }
@@ -92,27 +101,39 @@ public class Cloakroom {
         }
     }
 
+    public void setLengthOfTheDay(int lengthOfTheDay) {
+        this.lengthOfTheDay.set(lengthOfTheDay);
+    }
+
     private void work() throws InterruptedException {
         Random random = new Random();
-        int employee = getRandomEmployee(random);
         int randomInt = random.nextInt(10);
-        if ((randomInt < 7 && workingDay.get() > WORKING_DAY*0.5) || (randomInt < 3 && workingDay.get() <= WORKING_DAY*0.5)) {
-            if (freeSpace.get() > 0) {
-                Spot s = getFirstFreeSpot();
-                cloakroomContext.safeTrigger(VISITOR_GIVE_JACKET);
-                takeJacket(s, employee);
-            } else {
-                cloakroomContext.safeTrigger(NO_SPOT);
-                isPaused.set(true);
+        boolean isTake = (randomInt < 7 && workingDay.get() > lengthOfTheDay.get() * 0.5) || (randomInt < 3 && workingDay.get() <= lengthOfTheDay.get() * 0.5);
+        boolean isGive = (randomInt > 7 && workingDay.get() > lengthOfTheDay.get() * 0.5) || (randomInt > 3 && workingDay.get() <= lengthOfTheDay.get() * 0.5);
+        int employee = getRandomEmployee(random);
+        try {
+            if (isTake) {
+                if (freeSpace.get() > 0) {
+                    Spot s = getFirstFreeSpot();
+                    cloakroomContext.safeTrigger(VISITOR_GIVE_JACKET);
+                    takeJacket(s, 1);
+                } else {
+                    cloakroomContext.safeTrigger(NO_SPOT);
+                    isPaused.set(true);
+                }
             }
-        }
-        if ((randomInt > 7 && workingDay.get() > WORKING_DAY*0.5) || (randomInt > 3 && workingDay.get() <= WORKING_DAY*0.5)) {
-            IntegerProperty num = getRandomNotEmptySpot(random);
-            if (num != null) {
-                cloakroomContext.safeTrigger(VISITOR_TAKE_JACKET);
-                giveJacket(num.get(), employee);
+            if (isGive) {
+                Integer num = getRandomNotEmptySpot(random);
+                if (num != null) {
+                    cloakroomContext.safeTrigger(VISITOR_TAKE_JACKET);
+                    giveJacket(num, 1);
+                }
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
+
     }
 
     public void hireEmployee(Employee employee) {
@@ -137,7 +158,7 @@ public class Cloakroom {
     private void takeJacket(Spot s, int employeeIndex) throws InterruptedException {
         Employee employee = listOfEmployees.get(employeeIndex);
         employee.work(s, true);
-        notEmptySpots.add(new SimpleIntegerProperty(s.number));
+        notEmptySpots.add(s.number);
         int newFreeSpace = freeSpace.get() - 1;
         freeSpace.set(newFreeSpace);
         paySalary(employee.getSalary());
@@ -146,7 +167,7 @@ public class Cloakroom {
     private void giveJacket(int number, int employeeIndex) throws InterruptedException {
         Employee employee = listOfEmployees.get(employeeIndex);
         employee.work(spots.get(number - 1), false);
-        notEmptySpots.remove(new SimpleIntegerProperty(number));
+        notEmptySpots.remove(new Integer(number));
         int newFreeSpace = freeSpace.get() + 1;
         freeSpace.set(newFreeSpace);
         paySalary(employee.getSalary());
@@ -179,7 +200,7 @@ public class Cloakroom {
         return num;
     }
 
-    private IntegerProperty getRandomNotEmptySpot(Random random) {
+    private Integer getRandomNotEmptySpot(Random random) {
         if (!notEmptySpots.isEmpty())
             return notEmptySpots.get(random.nextInt(notEmptySpots.size()));
         else
@@ -213,5 +234,9 @@ public class Cloakroom {
 
     public IntegerProperty getProfit() {
         return profit;
+    }
+
+    public void setPeriod(int period) {
+        this.period = period;
     }
 }
