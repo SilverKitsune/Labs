@@ -17,8 +17,8 @@ public class SettingsView {
 
     public SettingsView(Settings settings) {
         dialog = new Dialog<>();
-        dialog.setTitle("Диалог с микроволновкой");
-        dialog.setHeaderText("Какую еду вы хотите приготовить?");
+        dialog.setTitle("Настройки");
+        //dialog.setHeaderText("");
 
 // Set the button types.
         ButtonType ок = new ButtonType("ОК", ButtonBar.ButtonData.OK_DONE);
