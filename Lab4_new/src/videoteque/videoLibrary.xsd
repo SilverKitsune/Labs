@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsd:schema elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <xsd:element name = "videoLibrary">
+    <xsd:element name="videoLibrary">
         <xsd:complexType>
             <xsd:sequence>
+                <xsd:element name="clients">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="client" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="name" type="xsd:string"/>
+                                        <xsd:element name="movies_count" type="xsd:int"/>
+                                        <xsd:element name="total_price" type="xsd:int"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
                 <xsd:element name="movie" maxOccurs="unbounded">
                     <xsd:complexType>
                         <xsd:sequence>
@@ -17,9 +32,10 @@
                             </xsd:element>
                             <xsd:element name="genre" maxOccurs="unbounded" type="xsd:string"/>
                             <xsd:element name="year">
-                                <xsd:simpleType >
+                                <xsd:simpleType>
                                     <xsd:restriction base="xsd:int">
                                         <xsd:minInclusive value="1888"/>
+                                        <xsd:maxInclusive value="2021"/>
                                     </xsd:restriction>
                                 </xsd:simpleType>
                             </xsd:element>

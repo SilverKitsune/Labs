@@ -21,6 +21,29 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="clients">
+ *           &lt;complexType>
+ *             &lt;complexContent>
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 &lt;sequence>
+ *                   &lt;element name="client" maxOccurs="unbounded">
+ *                     &lt;complexType>
+ *                       &lt;complexContent>
+ *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                           &lt;sequence>
+ *                             &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                             &lt;element name="movies_count" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *                             &lt;element name="total_price" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *                           &lt;/sequence>
+ *                         &lt;/restriction>
+ *                       &lt;/complexContent>
+ *                     &lt;/complexType>
+ *                   &lt;/element>
+ *                 &lt;/sequence>
+ *               &lt;/restriction>
+ *             &lt;/complexContent>
+ *           &lt;/complexType>
+ *         &lt;/element>
  *         &lt;element name="movie" maxOccurs="unbounded">
  *           &lt;complexType>
  *             &lt;complexContent>
@@ -75,18 +98,39 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
+        "clients",
         "movie"
 })
 @XmlRootElement(name = "videoLibrary")
 public class VideoLibrary {
 
     @XmlElement(required = true)
+    protected VideoLibrary.Clients clients;
+    @XmlElement(required = true)
     protected List<VideoLibrary.Movie> movie;
+
+    /**
+     * Gets the value of the clients property.
+     *
+     * @return possible object is
+     * {@link VideoLibrary.Clients }
+     */
+    public VideoLibrary.Clients getClients() {
+        return clients;
+    }
+
+    /**
+     * Sets the value of the clients property.
+     *
+     * @param value allowed object is
+     *              {@link VideoLibrary.Clients }
+     */
+    public void setClients(VideoLibrary.Clients value) {
+        this.clients = value;
+    }
 
     /**
      * Gets the value of the movie property.
@@ -107,8 +151,6 @@ public class VideoLibrary {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link VideoLibrary.Movie }
-     *
-     *
      */
     public List<VideoLibrary.Movie> getMovie() {
         if (movie == null) {
@@ -117,10 +159,173 @@ public class VideoLibrary {
         return this.movie;
     }
 
-    @Override
     public String toString() {
-        return "My Video Library:\n" + movie;
+        return "My Video Library:\n" + movie + "\n" + clients;
     }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     *
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     *
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element name="client" maxOccurs="unbounded">
+     *           &lt;complexType>
+     *             &lt;complexContent>
+     *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *                 &lt;sequence>
+     *                   &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *                   &lt;element name="movies_count" type="{http://www.w3.org/2001/XMLSchema}int"/>
+     *                   &lt;element name="total_price" type="{http://www.w3.org/2001/XMLSchema}int"/>
+     *                 &lt;/sequence>
+     *               &lt;/restriction>
+     *             &lt;/complexContent>
+     *           &lt;/complexType>
+     *         &lt;/element>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+            "client"
+    })
+    public static class Clients {
+
+        @XmlElement(required = true)
+        protected List<VideoLibrary.Clients.Client> client;
+
+        /**
+         * Gets the value of the client property.
+         *
+         * <p>
+         * This accessor method returns a reference to the live list,
+         * not a snapshot. Therefore any modification you make to the
+         * returned list will be present inside the JAXB object.
+         * This is why there is not a <CODE>set</CODE> method for the client property.
+         *
+         * <p>
+         * For example, to add a new item, do as follows:
+         * <pre>
+         *    getClient().add(newItem);
+         * </pre>
+         *
+         *
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link VideoLibrary.Clients.Client }
+         */
+        public List<VideoLibrary.Clients.Client> getClient() {
+            if (client == null) {
+                client = new ArrayList<VideoLibrary.Clients.Client>();
+            }
+            return this.client;
+        }
+
+        @Override
+        public String toString() {
+            return "Clients{" + client + '}';
+        }
+
+        /**
+         * <p>Java class for anonymous complex type.
+         *
+         * <p>The following schema fragment specifies the expected content contained within this class.
+         *
+         * <pre>
+         * &lt;complexType>
+         *   &lt;complexContent>
+         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *       &lt;sequence>
+         *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *         &lt;element name="movies_count" type="{http://www.w3.org/2001/XMLSchema}int"/>
+         *         &lt;element name="total_price" type="{http://www.w3.org/2001/XMLSchema}int"/>
+         *       &lt;/sequence>
+         *     &lt;/restriction>
+         *   &lt;/complexContent>
+         * &lt;/complexType>
+         * </pre>
+         */
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+                "name",
+                "moviesCount",
+                "totalPrice"
+        })
+        public static class Client {
+
+            @XmlElement(required = true)
+            protected String name;
+            @XmlElement(name = "movies_count")
+            protected int moviesCount;
+            @XmlElement(name = "total_price")
+            protected int totalPrice;
+
+            /**
+             * Gets the value of the name property.
+             *
+             * @return possible object is
+             * {@link String }
+             */
+            public String getName() {
+                return name;
+            }
+
+            /**
+             * Sets the value of the name property.
+             *
+             * @param value allowed object is
+             *              {@link String }
+             */
+            public void setName(String value) {
+                this.name = value;
+            }
+
+            /**
+             * Gets the value of the moviesCount property.
+             */
+            public int getMoviesCount() {
+                return moviesCount;
+            }
+
+            /**
+             * Sets the value of the moviesCount property.
+             */
+            public void setMoviesCount(int value) {
+                this.moviesCount = value;
+            }
+
+            /**
+             * Gets the value of the totalPrice property.
+             */
+            public int getTotalPrice() {
+                return totalPrice;
+            }
+
+            /**
+             * Sets the value of the totalPrice property.
+             */
+            public void setTotalPrice(int value) {
+                this.totalPrice = value;
+            }
+
+            @Override
+            public String toString() {
+                return  "\n{Client: name='" + name +
+                        "\n moviesCount=" + moviesCount +
+                        "\n totalPrice=" + totalPrice + "}";
+            }
+        }
+
+    }
+
 
     /**
      * <p>Java class for anonymous complex type.
@@ -176,8 +381,6 @@ public class VideoLibrary {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     *
-     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
@@ -203,10 +406,8 @@ public class VideoLibrary {
         /**
          * Gets the value of the title property.
          *
-         * @return
-         *     possible object is
-         *     {@link String }
-         *
+         * @return possible object is
+         * {@link String }
          */
         public String getTitle() {
             return title;
@@ -215,10 +416,8 @@ public class VideoLibrary {
         /**
          * Sets the value of the title property.
          *
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *
+         * @param value allowed object is
+         *              {@link String }
          */
         public void setTitle(String value) {
             this.title = value;
@@ -243,8 +442,6 @@ public class VideoLibrary {
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link VideoLibrary.Movie.Director }
-         *
-         *
          */
         public List<VideoLibrary.Movie.Director> getDirector() {
             if (director == null) {
@@ -272,8 +469,6 @@ public class VideoLibrary {
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link String }
-         *
-         *
          */
         public List<String> getGenre() {
             if (genre == null) {
@@ -284,7 +479,6 @@ public class VideoLibrary {
 
         /**
          * Gets the value of the year property.
-         *
          */
         public int getYear() {
             return year;
@@ -292,7 +486,6 @@ public class VideoLibrary {
 
         /**
          * Sets the value of the year property.
-         *
          */
         public void setYear(int value) {
             this.year = value;
@@ -300,7 +493,6 @@ public class VideoLibrary {
 
         /**
          * Gets the value of the rating property.
-         *
          */
         public float getRating() {
             return rating;
@@ -308,7 +500,6 @@ public class VideoLibrary {
 
         /**
          * Sets the value of the rating property.
-         *
          */
         public void setRating(float value) {
             this.rating = value;
@@ -317,10 +508,8 @@ public class VideoLibrary {
         /**
          * Gets the value of the type property.
          *
-         * @return
-         *     possible object is
-         *     {@link String }
-         *
+         * @return possible object is
+         * {@link String }
          */
         public String getType() {
             return type;
@@ -329,16 +518,13 @@ public class VideoLibrary {
         /**
          * Sets the value of the type property.
          *
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *
+         * @param value allowed object is
+         *              {@link String }
          */
         public void setType(String value) {
             this.type = value;
         }
 
-        @Override
         public String toString() {
             return  "Title: \"" + title + '\"' +
                     "\nDirector(s): " + director +
@@ -365,8 +551,6 @@ public class VideoLibrary {
          *   &lt;/complexContent>
          * &lt;/complexType>
          * </pre>
-         *
-         *
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
@@ -383,10 +567,8 @@ public class VideoLibrary {
             /**
              * Gets the value of the firstName property.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
-             *
+             * @return possible object is
+             * {@link String }
              */
             public String getFirstName() {
                 return firstName;
@@ -395,10 +577,8 @@ public class VideoLibrary {
             /**
              * Sets the value of the firstName property.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
-             *
+             * @param value allowed object is
+             *              {@link String }
              */
             public void setFirstName(String value) {
                 this.firstName = value;
@@ -407,10 +587,8 @@ public class VideoLibrary {
             /**
              * Gets the value of the lastName property.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
-             *
+             * @return possible object is
+             * {@link String }
              */
             public String getLastName() {
                 return lastName;
@@ -419,10 +597,8 @@ public class VideoLibrary {
             /**
              * Sets the value of the lastName property.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
-             *
+             * @param value allowed object is
+             *              {@link String }
              */
             public void setLastName(String value) {
                 this.lastName = value;
@@ -432,6 +608,7 @@ public class VideoLibrary {
             public String toString() {
                 return firstName + ' ' + lastName;
             }
+
         }
 
     }

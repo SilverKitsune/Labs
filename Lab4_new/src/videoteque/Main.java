@@ -76,6 +76,13 @@ public class Main {
                 movie2 = objectFactory.createVideoLibraryMovie();
         VideoLibrary.Movie.Director director1 = objectFactory.createVideoLibraryMovieDirector(),
                 director2 = objectFactory.createVideoLibraryMovieDirector();
+        VideoLibrary.Clients.Client my_client = objectFactory.createVideoLibraryClientsClient();
+        my_client.name = "Джон Смит";
+        my_client.moviesCount = 3;
+        my_client.totalPrice = my_client.moviesCount * 100;
+        videoLibrary.clients = objectFactory.createVideoLibraryClients();
+        videoLibrary.clients.client = new ArrayList<>();
+        videoLibrary.clients.client.add(my_client);
         director1.setFirstName("Джеймс");
         director1.setLastName("Кэмерон");
         movie1.director = new ArrayList<>();

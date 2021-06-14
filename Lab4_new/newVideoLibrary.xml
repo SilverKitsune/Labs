@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <videoLibrary>
+    <clients>
+        <client>
+            <name>Джон Смит</name>
+            <movies_count>3</movies_count>
+            <total_price>300</total_price>
+        </client>
+    </clients>
     <movie type="vhs">
         <title>Терминатор</title>
         <director>

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE videoLibrary [
-        <!ELEMENT videoLibrary (movie*)>
+        <!ELEMENT videoLibrary (clients, movie*)>
+        <!ELEMENT clients (client*)>
+        <!ELEMENT client (name, movies_count, total_price)>
+        <!ELEMENT name (#PCDATA)>
+        <!ELEMENT movies_count (#PCDATA)>
+        <!ELEMENT total_price (#PCDATA)>
         <!ELEMENT movie (title, director+,genre+,year,rating)>
         <!ATTLIST movie type (dvd | blueRay | vhs) #REQUIRED>
         <!ELEMENT title (#PCDATA)>
@@ -12,6 +17,26 @@
         <!ELEMENT rating (#PCDATA)>
         ]>
 <videoLibrary>
+    <clients>
+        <client>
+            <name>Клиент1</name>
+            <movies_count>2</movies_count>
+            <total_price>200</total_price>
+        </client>
+
+        <client>
+            <name>Клиент2</name>
+            <movies_count>5</movies_count>
+            <total_price>500</total_price>
+        </client>
+
+        <client>
+            <name>Клиент3</name>
+            <movies_count>1</movies_count>
+            <total_price>100</total_price>
+        </client>
+    </clients>
+
     <movie type="dvd">
         <title>Дьявол носит Prada</title>
         <director>

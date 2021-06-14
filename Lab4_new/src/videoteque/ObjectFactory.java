@@ -46,11 +46,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link VideoLibrary.Clients }
+     * 
+     */
+    public VideoLibrary.Clients createVideoLibraryClients() {
+        return new VideoLibrary.Clients();
+    }
+
+    /**
      * Create an instance of {@link VideoLibrary.Movie.Director }
      * 
      */
     public VideoLibrary.Movie.Director createVideoLibraryMovieDirector() {
         return new VideoLibrary.Movie.Director();
+    }
+
+    /**
+     * Create an instance of {@link VideoLibrary.Clients.Client }
+     * 
+     */
+    public VideoLibrary.Clients.Client createVideoLibraryClientsClient() {
+        return new VideoLibrary.Clients.Client();
     }
 
 }
