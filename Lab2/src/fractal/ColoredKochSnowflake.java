@@ -17,23 +17,6 @@ public class ColoredKochSnowflake extends Fractal implements SelfAffinity {
     private Color currentColor;
     private int elementCount;
 
-    public void setEndColor(Color endColor) {
-        this.endColor = endColor;
-    }
-
-    /*
-        public ColoredKochSnowflake(int width, int height, int n, int m, int count, Color color) {
-            super(width, height);
-            this.count = count;
-            centre = new Point2D.Double(width / 2.0, height / 2.0);
-            d = width / 3.0;
-            this.beginColor = color;
-            this.endColor = Color.BLACK;
-            currentColor = beginColor;
-            this.n = n;
-            this.m = m;
-        }
-    */
     public ColoredKochSnowflake(int width, int height, int n, int m, int count, Color beginColor, Color endColor) {
         super(width, height);
         this.count = count;

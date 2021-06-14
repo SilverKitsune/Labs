@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="02f7a138-623e-46af-b7a1-b983aae89348" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fractal/ColoredKochSnowflake.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fractal/ColoredKochSnowflake.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fractal/SelfAffinity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fractal/SelfAffinity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lab7/target/classes/starter/AppStarter.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab7/target/classes/starter/AppStarter.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -109,7 +109,7 @@
       <workItem from="1620560257740" duration="21270000" />
       <workItem from="1620840920084" duration="61000" />
       <workItem from="1620841004679" duration="773000" />
-      <workItem from="1623685861373" duration="3053000" />
+      <workItem from="1623685861373" duration="3291000" />
     </task>
     <task id="LOCAL-00001" summary="Удален ненужный файл и добавлена сгенерированная UML-диаграмма">
       <created>1620841736641</created>
@@ -118,7 +118,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620841736641</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Сделано зачетное задание для 2 лабы">
+      <created>1623689141416</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1623689141416</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -126,7 +133,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Удален ненужный файл и добавлена сгенерированная UML-диаграмма" />
-    <option name="LAST_COMMIT_MESSAGE" value="Удален ненужный файл и добавлена сгенерированная UML-диаграмма" />
+    <MESSAGE value="Сделано зачетное задание для 2 лабы" />
+    <option name="LAST_COMMIT_MESSAGE" value="Сделано зачетное задание для 2 лабы" />
   </component>
   <component name="WindowStateProjectService">
     <state x="765" y="229" key="#com.intellij.ide.util.MemberChooser" timestamp="1620584062875">
@@ -137,10 +145,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="690" y="270" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1620582056537" />
-    <state x="598" y="118" key="CommitChangelistDialog2" timestamp="1620841735125">
+    <state x="598" y="118" key="CommitChangelistDialog2" timestamp="1623689139752">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="598" y="118" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1620841735125" />
+    <state x="598" y="118" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1623689139752" />
     <state x="740" y="252" key="FileChooserDialogImpl" timestamp="1620841595945">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
