@@ -60,6 +60,7 @@ public class Server {
             boolean isFirst = true;                                         // проверка на первое слово (это чтобы не было лишних пробелов)
             while (words.hasMoreElements()) {
                 String word = words.nextToken();
+
                 if (isHex(word)) {                                          // если слово - шеснадцетиричное число
                     word = String.valueOf(
                             Integer.parseInt(word.substring(2), 16)); // переводим его в десятичное число
@@ -68,6 +69,7 @@ public class Server {
                     editedText.append(" ");                                 // если слово не первое, то сначала добавляем пробел
                 else
                     isFirst = false;                                        // если слово первое, то пробел сначала добавлять не нужно, просто отмечаем, что остальные слова уже не первые
+                word = word.toUpperCase(Locale.getDefault());
                 editedText.append(word);                                    //записываем слово
             }
             editedText.append("\r\n");                                      // добавляем в текст перенос строки
