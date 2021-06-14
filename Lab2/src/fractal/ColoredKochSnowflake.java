@@ -15,23 +15,25 @@ public class ColoredKochSnowflake extends Fractal implements SelfAffinity {
     private Color beginColor;
     private Color endColor;
     private Color currentColor;
+    private int elementCount;
 
     public void setEndColor(Color endColor) {
         this.endColor = endColor;
     }
 
-    public ColoredKochSnowflake(int width, int height, int n, int m, int count, Color color) {
-        super(width, height);
-        this.count = count;
-        centre = new Point2D.Double(width / 2.0, height / 2.0);
-        d = width / 3.0;
-        this.beginColor = color;
-        this.endColor = Color.BLACK;
-        currentColor = beginColor;
-        this.n = n;
-        this.m = m;
-    }
-
+    /*
+        public ColoredKochSnowflake(int width, int height, int n, int m, int count, Color color) {
+            super(width, height);
+            this.count = count;
+            centre = new Point2D.Double(width / 2.0, height / 2.0);
+            d = width / 3.0;
+            this.beginColor = color;
+            this.endColor = Color.BLACK;
+            currentColor = beginColor;
+            this.n = n;
+            this.m = m;
+        }
+    */
     public ColoredKochSnowflake(int width, int height, int n, int m, int count, Color beginColor, Color endColor) {
         super(width, height);
         this.count = count;
@@ -46,6 +48,7 @@ public class ColoredKochSnowflake extends Fractal implements SelfAffinity {
 
     @Override
     public void draw(double d) {
+        elementCount = 0;
         Point2D[] vs = new Point2D[m];
         for (int i = 0; i < m; ++i) {
             vs[i] = new Point2D.Double(
@@ -75,6 +78,7 @@ public class ColoredKochSnowflake extends Fractal implements SelfAffinity {
                     beginColor.getBlue() + (endColor.getBlue() - beginColor.getBlue()) * i / count);
             draw(d * (count - i) / count);
         }
+        System.out.println("Количество элементов в снежинке = " + elementCount);
     }
 
     private void drawKochCurve(Point2D p, Point2D q, int n, Color color) {
@@ -83,7 +87,7 @@ public class ColoredKochSnowflake extends Fractal implements SelfAffinity {
             graph.draw(new Line2D.Double(p, q));
             return;
         }
-        /*Расчет координат точек треугольника на этой итерации*/
+
         Point2D r = new Point2D.Double(
                 (2 * p.getX() + q.getX()) / 3,
                 (2 * p.getY() + q.getY()) / 3);
@@ -95,7 +99,7 @@ public class ColoredKochSnowflake extends Fractal implements SelfAffinity {
         Point2D t = new Point2D.Double(
                 (p.getX() + 2 * q.getX()) / 3,
                 (p.getY() + 2 * q.getY()) / 3);
-        /*Рисуем треугольник*/
+
         Path2D path = new Path2D.Double();
         path.moveTo(r.getX(), r.getY());
         path.lineTo(s.getX(), s.getY());
@@ -103,9 +107,10 @@ public class ColoredKochSnowflake extends Fractal implements SelfAffinity {
         path.lineTo(r.getX(), r.getY());
         path.closePath();
         graph.setColor(color);
-        graph.fill(path); //Заполняем треугольник
+        graph.fill(path);
 
-        /*Ищем точки кривой на получившихся отрезках*/
+        elementCount++;
+
         drawKochCurve(p, r, n - 1, color);
         drawKochCurve(r, s, n - 1, color);
         drawKochCurve(s, t, n - 1, color);
@@ -114,7 +119,7 @@ public class ColoredKochSnowflake extends Fractal implements SelfAffinity {
 
     public static void main(String[] args) {
         int WIDTH = 640, HEIGHT = 480;
-        ColoredKochSnowflake snowflake = new ColoredKochSnowflake(WIDTH, HEIGHT, 5, 5, 5, Color.RED, Color.blue);
+        ColoredKochSnowflake snowflake = new ColoredKochSnowflake(WIDTH, HEIGHT, 2, 4, 3, Color.RED, Color.blue);
         snowflake.drawMegaFractal();
         JFrame frame = new JFrame();
         frame.addNotify();
