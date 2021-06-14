@@ -62,6 +62,7 @@ public class MyWebClient {
         System.out.println("5 - Аршин");
         System.out.println("6 - Сажень");
         System.out.println("7 - Верста");
+        System.out.println("8 - Метр");
         int type = -1;
         if (scanner.hasNextInt())
             type = scanner.nextInt();
@@ -82,6 +83,8 @@ public class MyWebClient {
                 return Measures.SAZHEN;
             case 7:
                 return Measures.VERSTA;
+            case 8:
+                return Measures.METER;
         }
         System.out.println("Ошибка ввода! Неверное значение");
         return null;
